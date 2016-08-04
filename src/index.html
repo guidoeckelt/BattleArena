@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="UTF-8"/>
+	<title>Endless Space</title>
+    <!-- Styles -->
+    <link href="Style/design.css" rel="stylesheet"/>
+
+    <!-- Externals Scripts-->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.1.0/jquery.min.js"></script>
+    <!-- Game Scripts-->
+    <script src="Util/Oop.js"></script>
+    <script src="KeyBinding/Key.js"></script>
+    <script src="KeyBinding/SpecialKey.js"></script>
+    <script src="KeyBinding/KeyCombination.js"></script>
+    <script src="KeyBinding/KeyBinding.js"></script>
+    <script src="KeyBinding/KeyBinder.js"></script>
+    <script src="Model/Vector2D.js"></script>
+    <script src="Model/GameObject/GameObject.js"></script>
+	<script src="Model/GameObject/Projectile.js"></script>
+    <script src="Model/GameObject/SpaceShip.js"></script>
+    <script src="View/View.js"></script>
+    <script src="Model/EndlessSpace.js"></script>
+    <script>
+        $(function(){
+
+            //============INIT============
+            var endlessSpaceGame = new EndlessSpace();
+            endlessSpaceGame.start("scenePlaceholder");
+
+                //========Interaction=====
+            $("#btn-pause").click(function (event) {
+                endlessSpaceGame.pause();
+            });
+                //========================
+            //============================
+        });
+    </script>
+</head>
+<body>
+	<div id="root">
+        <div class="container">
+            <div id="scenePlaceholder"></div>
+        </div>
+        <div id="btn-pause" class="pause">Pause</div>
+	</div>
+</body>
+</html>
