@@ -18,14 +18,15 @@
     <script src="Model/Vector2D.js"></script>
     <script src="Model/GameObject/GameObject.js"></script>
 	<script src="Model/GameObject/Projectile.js"></script>
-    <script src="Model/GameObject/SpaceShip.js"></script>
+    <script src="Model/GameObject/Fighter.js"></script>
     <script src="View/View.js"></script>
-    <script src="Model/EndlessSpace.js"></script>
+    <script src="Model/Config.js"></script>
+    <script src="Model/BattleArena.js"></script>
     <script>
         $(function(){
 
             //============INIT============
-            var endlessSpaceGame = new EndlessSpace();
+            var endlessSpaceGame = new BattleArena();
             endlessSpaceGame.start("scenePlaceholder");
 
                 //========Interaction=====

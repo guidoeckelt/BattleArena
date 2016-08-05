@@ -1,14 +1,13 @@
-var game, config;//Static variables;
-function EndlessSpace(){
+var game;//Static variables;
+function BattleArena(){
     game = this;
 	var self = this;
 	self.config = new Config();
-    config = self.config;
-	self.view = new View(self.config);
+	self.view = new View();
 	self.keybinder = new KeyBinder();
-	var midY = this.config.grid.height/2;
-	self.spaceship = new SpaceShip(new Vector2D(1, midY),new Vector2D(1,0));
-	self.gameObjects = new Array(this.spaceship);
+	var midY = Config.grid.height/2;
+	self.fighter = new Fighter(new Vector2D(1, midY),new Vector2D(1,0));
+	self.gameObjects = new Array(this.fighter);
 
 	self.shouldInterupt = false;
 //===Game-Interface
@@ -21,12 +20,15 @@ function EndlessSpace(){
         $("body").keyup(self.keybinder.OnKeyUp);
 
 		self.gameLoop();
+		self.view.startRender(self.gameObjects);
 	};
-	self.stop = function () {
+	self.stopRender = function () {
 		self.shouldInterupt = true;
+		self.view.stopRender();
 	};
 	self.pause = function () {
 		self.shouldInterupt = true;
+		self.view.stopRender();
 	};
 	self.restart = function () {
 
@@ -34,36 +36,35 @@ function EndlessSpace(){
 
 	self.gameLoop = function (timeStamp) {
 		self.moveGameObjects();
-		if(self.keybinder.actionsTriggered[self.config.shoot] == true){
-			self.spaceship.shoots();
+		if(self.keybinder.actionsTriggered[Config.shoot] == true){
+			self.fighter.shoots();
 		}
 
-		self.view.render(self.gameObjects);
 		if(self.shouldInterupt){
 		    return;
 		}
-        window.setTimeout(function () { self.gameLoop(); },self.config.delay);
+        window.setTimeout(function () { self.gameLoop(); },Config.delay);
         //window.requestAnimationFrame(function(){ self.gameLoop(); });
 	};
 
 	self.moveGameObjects = function () {
 		for(var i = 0;i < self.gameObjects.length;i++){
 			var gameObject = self.gameObjects[i];
-			if (GameObject.Type.SpaceShip == gameObject.getType()) {
-				if (self.keybinder.actionsTriggered[self.config.moveLeft[0]] == true
-					|| self.keybinder.actionsTriggered[self.config.moveLeft[1]] == true) {
+			if (GameObject.Type.Fighter == gameObject.getType()) {
+				if (self.keybinder.actionsTriggered[Config.moveLeft[0]] == true
+					|| self.keybinder.actionsTriggered[Config.moveLeft[1]] == true) {
 					gameObject.move(new Vector2D(-1, 0));
 				}
-				if (self.keybinder.actionsTriggered[self.config.moveTop[0]] == true
-					|| self.keybinder.actionsTriggered[self.config.moveTop[1]] == true) {
+				if (self.keybinder.actionsTriggered[Config.moveTop[0]] == true
+					|| self.keybinder.actionsTriggered[Config.moveTop[1]] == true) {
 					gameObject.move(new Vector2D(0, -1));
 				}
-				if (self.keybinder.actionsTriggered[self.config.moveRight[0]] == true
-					|| self.keybinder.actionsTriggered[self.config.moveRight[1]] == true) {
+				if (self.keybinder.actionsTriggered[Config.moveRight[0]] == true
+					|| self.keybinder.actionsTriggered[Config.moveRight[1]] == true) {
 					gameObject.move(new Vector2D(1, 0));
 				}
-				if (self.keybinder.actionsTriggered[self.config.moveBottom[0]] == true
-					|| self.keybinder.actionsTriggered[self.config.moveBottom[1]] == true) {
+				if (self.keybinder.actionsTriggered[Config.moveBottom[0]] == true
+					|| self.keybinder.actionsTriggered[Config.moveBottom[1]] == true) {
 					gameObject.move(new Vector2D(0, 1));
 				}
 			} else if (GameObject.Type.Projectile == gameObject.getType()) {
@@ -79,16 +80,4 @@ function EndlessSpace(){
 		self.gameObjects.push(gameObject);
 	}
 
-}
-function Config(){
-	this.grid = {width:	100, height: 60};
-	this.fieldSize = 10;
-	this.moveLeft 	= [37,  97];
-	this.moveRight 	= [39, 100];
-	this.moveTop 	= [38, 119];
-	this.moveBottom = [40, 115];
-	this.shoot 		= 32;
-
-	this.delay = 10;
-	
 }

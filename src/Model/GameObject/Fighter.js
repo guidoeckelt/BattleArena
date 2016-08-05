@@ -1,11 +1,11 @@
-var SpaceShip = (function () {
+var Fighter = (function () {
 
 	var ctor = function(position, alignment){
 		var self = this;
         self.constructor.super.call(this,
-            GameObject.Type.SpaceShip, position, 3, 2);
+            GameObject.Type.Fighter, position, 30, 20);
 		self.setAlignment(alignment);
-        self.setMovingSpeed(1.5);
+        self.setMovingSpeed(5);
 
 		self.shoots = function () {
 			var X = self.getPosition().X + self.getWidth();

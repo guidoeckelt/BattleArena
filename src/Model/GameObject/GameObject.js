@@ -45,7 +45,7 @@ var GameObject = (function(){
     };
 
 // public static
-    ctor.Type = { SpaceShip : "SpaceShip",Projectile:"Projectile"};
+    ctor.Type = { Fighter : "Fighter",Projectile:"Projectile"};
     ctor.State = { INVISION : "InVision" , OUTOFVISION : "OutOfVision"};
 
 // public shared
@@ -61,10 +61,10 @@ var GameObject = (function(){
             }
             var moveOffset = movingDirection.multipleByScalar(this.getMovingSpeed());
             var dummyGameObject = this.clone(moveOffset);
-            if(dummyGameObject.getPosition().X < 1||dummyGameObject.getPosition().X+dummyGameObject.getWidth() > config.grid.width){
+            if(dummyGameObject.getPosition().X < 1||dummyGameObject.getPosition().X+dummyGameObject.getWidth() > Config.grid.width){
                 return GameObject.State.OUTOFVISION;
             }
-            if(dummyGameObject.getPosition().Y < 1||dummyGameObject.getPosition().Y+dummyGameObject.getHeight()-1 > config.grid.height){
+            if(dummyGameObject.getPosition().Y < 1||dummyGameObject.getPosition().Y+dummyGameObject.getHeight()-1 > Config.grid.height){
                 return GameObject.State.OUTOFVISION;
             }
             this.setPosition(this.getPosition().add(moveOffset));

@@ -1,15 +1,15 @@
-function View(config){
+function View(){
 	var self = this;
-	self.config = config;
+    self.size = Config.calculateViewSize();
 	self.canvas;
 	self.context;
-	self.background = true;
-	self.backgroundCounter = 0;
+    self.delay = 1;
+    self.shouldInterupt = false;
 
 	self.loadDOM = function (placeholder) {
 		var canvas = document.createElement("canvas");
-		canvas.width  = self.config.grid.width*self.config.fieldSize;
-		canvas.height = self.config.grid.height*self.config.fieldSize;
+		canvas.width  = self.size.width;
+		canvas.height = self.size.height;
 		canvas.classList.add("scene");
 		self.canvas = canvas;
 		self.context = canvas.getContext("2d");
@@ -25,51 +25,52 @@ function View(config){
         $(window).keydown(game.keybinder.OnKeyPress);
         $(window).keyup(game.keybinder.OnKeyUp);
 	};
-
-	self.render = function(gameObjects){
+	self.startRender = function(gameObjects){
 		self.context.clearRect(0,0,self.canvas.width, self.canvas.height);
 		self.drawBackground();
 		self.drawObjects(gameObjects);
+
+        if(self.shouldInterupt){
+            return;
+        }
+		window.setTimeout(function () { self.startRender(gameObjects); },self.delay);
 	};
+	self.stopRender = function () {
+        self.shouldInterupt = true;
+    };
+
 	self.drawBackground = function () {
-		self.backgroundCounter++;
-		var offset = ((self.config.fieldSize)/self.backgroundCounter);
 		self.context.fillStyle = "#000000";
-		var size = 2;
-		for(var y = 0;y < self.config.grid.height+1;y++){
-			for(var x = 0;x < self.config.grid.width+1;x++){
-				var posX = x*self.config.fieldSize+offset;
-				var posY = y*self.config.fieldSize+(self.config.fieldSize/2);
-				self.context.fillRect(posX, posY, size, size);
+		var blockSize = 2;
+		for(var y = 5;y < self.size.height;y+=10){
+			for(var x = 5;x < self.size.width;x+=10){
+				self.context.fillRect(x, y, blockSize, blockSize);
 			}
-		}
-		if (8 == self.backgroundCounter) {
-			self.backgroundCounter = 0;
 		}
 	};
 	self.drawObjects = function(gameObjects){
 		for(var gameObject of gameObjects){
-			if (GameObject.Type.SpaceShip == gameObject.getType()) {
-				self.drawSpaceShip(gameObject);
+			if (GameObject.Type.Fighter == gameObject.getType()) {
+				self.drawFighter(gameObject);
 			} else if (GameObject.Type.Projectile == gameObject.getType()) {
 				self.drawProjectile(gameObject);
 			}
 		}
 	};
 
-	self.drawSpaceShip = function(spaceShip){
-		var x = (spaceShip.getPosition().X-1)*self.config.fieldSize;
-		var y = (spaceShip.getPosition().Y-1)*self.config.fieldSize;
-		var width = self.config.fieldSize*spaceShip.getWidth();
-		var height = self.config.fieldSize*spaceShip.getHeight();
+	self.drawFighter = function(fighter){
+		var x = fighter.getPosition().X;
+		var y = fighter.getPosition().Y;
+		var width = fighter.getWidth();
+		var height = fighter.getHeight();
 		self.context.fillStyle = "#ff0000";
 		self.context.fillRect(x, y, width, height);
 	};
 	self.drawProjectile = function(projectile){
-		var x = (projectile.getPosition().X-1)*self.config.fieldSize;
-		var y = (projectile.getPosition().Y-1)*self.config.fieldSize;
-		var width = self.config.fieldSize*projectile.getWidth();
-		var height = self.config.fieldSize*projectile.getHeight();
+		var x = projectile.getPosition().X;
+		var y = projectile.getPosition().Y;
+		var width = projectile.getWidth();
+		var height = projectile.getHeight();
 		self.context.fillStyle = "#0000ff";
 		self.context.fillRect(x, y, width, height);
 	};
