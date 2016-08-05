@@ -21,29 +21,6 @@ var Vector2D = (function () {
     };
 
 // public static
-    ctor.add = function (other) {
-        if (Vector2D != other.constructor) {
-            // TODO Exception
-            return;
-        }
-        return new Vector2D(this.getX()+other.getX(), this.getY()+other.getY());
-
-    };
-    ctor.substract = function (other) {
-        if (Vector2D != other.constructor) {
-            // TODO Exception
-            return;
-        }
-        return new Vector2D(this.getX()-other.getX(), this.getY()-other.getY());
-
-    };
-    ctor.multipleByScalar = function (scalar) {
-        if (Number != scalar.prototype) {
-            // TODO Exception
-            return;
-        }
-        return new Vector2D(this.getX()*scalar, this.getY()*scalar);
-    };
 
 // public shared
     ctor.prototype = {
@@ -53,6 +30,30 @@ var Vector2D = (function () {
         normalize : function () {
             var length = this.length();
             return new Vector2D(this.getX()/length, this.getY()/length);
+        },
+        add : function (other) {
+            if (Vector2D != other.constructor) {
+                // TODO ExceptionContext
+                ExceptionContext.throw(new Exception("Object is not a Vector2D"));
+                // return;
+            }
+            return new Vector2D(this.getX()+other.getX(), this.getY()+other.getY());
+        },
+        substract : function (other) {
+            if (Vector2D != other.constructor) {
+                // TODO ExceptionContext
+                ExceptionContext.throw(new Exception("Object is not a Vector2D"));
+                // return;
+            }
+            return new Vector2D(this.getX()-other.getX(), this.getY()-other.getY());
+        },
+        multipleByScalar : function (scalar) {
+            if (Number != scalar.prototype) {
+                // TODO ExceptionContext
+                ExceptionContext.throw(new Exception("Object is not a Vector2D"));
+                // return;
+            }
+            return new Vector2D(this.getX()*scalar, this.getY()*scalar);
         }
     };
 

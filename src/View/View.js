@@ -56,16 +56,16 @@ function View(){
 	};
 
 	self.drawFighter = function(fighter){
-		var x = fighter.getPosition().X;
-		var y = fighter.getPosition().Y;
+		var x = fighter.getPosition().getX();
+		var y = fighter.getPosition().getY();
 		var width = fighter.getWidth();
 		var height = fighter.getHeight();
 		self.context.fillStyle = "#ff0000";
 		self.context.fillRect(x, y, width, height);
 	};
 	self.drawProjectile = function(projectile){
-		var x = projectile.getPosition().X;
-		var y = projectile.getPosition().Y;
+		var x = projectile.getPosition().getX();
+		var y = projectile.getPosition().getY();
 		var width = projectile.getWidth();
 		var height = projectile.getHeight();
 		self.context.fillStyle = "#0000ff";

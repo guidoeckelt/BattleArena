@@ -8,8 +8,8 @@ var Fighter = (function () {
         self.setMovingSpeed(5);
 
 		self.shoots = function () {
-			var X = self.getPosition().X + self.getWidth();
-			var Y = self.getPosition().Y + (self.getHeight()/2);
+			var X = self.getPosition().getX() + self.getWidth();
+			var Y = self.getPosition().getY() + (self.getHeight()/2);
 			var projectile = new Projectile(new Vector2D(X, Y), self.getAlignment());
 			BattleArena.addGameObject(projectile);
 		};

@@ -55,9 +55,11 @@ var GameObject = (function(){
                 if(null!=this.getMovingDirection()){
                     movingDirection = this.getMovingDirection();
                 }else{
-                    // TODO Exception
+                    // TODO ExceptionContext
+                    ExceptionContext.throw(new Exception(
+                        "GameObject has not a movingDirection and wants to move"));
                     // movingDirection = new Vector2D(0,0);
-                    return;
+                    // return;
                 }
             }
             var moveOffset = movingDirection.multipleByScalar(this.getMovingSpeed());

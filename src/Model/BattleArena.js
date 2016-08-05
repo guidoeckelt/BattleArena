@@ -79,16 +79,19 @@ var BattleArena = (function () {
         return gameObjects;
     };
     ctor.addGameObject = function (gameObject) {
-        if (GameObject != gameObject.constructor) {
-            // TODO Exception
-            return;
+        if (GameObject != gameObject.constructor.super) {
+            // TODO ExceptionContext
+            ExceptionContext.throw(new Exception("Object is not a GameObject"));
+            //return;
         }
         gameObjects.push(gameObject);
+        console.log(gameObjects.length);
     };
     ctor.removeGameObject = function(gameObject){
-        if (GameObject != gameObject.constructor) {
-            // TODO Exception
-            return;
+        if (GameObject != gameObject.constructor.super) {
+            // TODO ExceptionContext
+            ExceptionContext.throw(new Exception("Object is not a GameObject"));
+            // return;
         }
         gameObjects.splice(gameObjects.indexOf(gameObject),1);
         console.log(gameObjects.length);
