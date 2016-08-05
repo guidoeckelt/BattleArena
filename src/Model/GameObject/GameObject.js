@@ -56,7 +56,8 @@ var GameObject = (function(){
                     movingDirection = this.getMovingDirection();
                 }else{
                     // TODO Exception
-                    movingDirection = new Vector2D(0,0);
+                    // movingDirection = new Vector2D(0,0);
+                    return;
                 }
             }
             var moveOffset = movingDirection.multipleByScalar(this.getMovingSpeed());

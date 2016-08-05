@@ -11,7 +11,7 @@ var Fighter = (function () {
 			var X = self.getPosition().X + self.getWidth();
 			var Y = self.getPosition().Y + (self.getHeight()/2);
 			var projectile = new Projectile(new Vector2D(X, Y), self.getAlignment());
-			game.addGameObject(projectile);
+			BattleArena.addGameObject(projectile);
 		};
 	};
 	inherit(ctor, GameObject);

@@ -18,27 +18,24 @@ function View(){
 		var parent = placeholderDOM.parentNode;
 		parent.removeChild(placeholderDOM);
 		parent.appendChild(canvas);
-
-
-        // document.addEventListener("keypress",game.keybinder.OnKeyPress);
-        //document.addEventListener("keyup",game.keybinder.OnKeyUp);
-        $(window).keydown(game.keybinder.OnKeyPress);
-        $(window).keyup(game.keybinder.OnKeyUp);
 	};
-	self.startRender = function(gameObjects){
-		self.context.clearRect(0,0,self.canvas.width, self.canvas.height);
-		self.drawBackground();
-		self.drawObjects(gameObjects);
-
-        if(self.shouldInterupt){
-            return;
-        }
-		window.setTimeout(function () { self.startRender(gameObjects); },self.delay);
+	self.startRender = function(){
+		self.render();
 	};
 	self.stopRender = function () {
         self.shouldInterupt = true;
     };
 
+	self.render = function () {
+		self.context.clearRect(0,0,self.canvas.width, self.canvas.height);
+		self.drawBackground();
+		self.drawObjects(BattleArena.getGameObjects());
+
+		if(self.shouldInterupt){
+			return;
+		}
+		window.setTimeout(function () { self.render(); },self.delay);
+	};
 	self.drawBackground = function () {
 		self.context.fillStyle = "#000000";
 		var blockSize = 2;
