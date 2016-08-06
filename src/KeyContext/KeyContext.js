@@ -1,7 +1,7 @@
 /**
  * Created by Guido on 01.08.2016.
  */
-var KeyBinder = (function(){
+var KeyContext = (function(){
 
 // private static var
 
@@ -43,7 +43,6 @@ var KeyBinder = (function(){
 
 // Getters & Setters
         self.getKeyBindings = function(){ return keyBindings; };
-        self.setKeyBindings = function (value)  { keyBindings = value; };
     };
 
 // public static

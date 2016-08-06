@@ -17,8 +17,6 @@ var Config = (function () {
 // public static
     ctor.grid = { width: 1000,  height: 600};
 
-    ctor.delay = 20;
-
     ctor.moveLeft 	= [37,  97];
     ctor.moveRight 	= [39, 100];
     ctor.moveTop 	= [38, 119];

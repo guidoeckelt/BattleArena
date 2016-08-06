@@ -5,31 +5,54 @@ var BattleArena = (function () {
         var gameObjects = new Array();
 
 // Contructor
-    var ctor = function () {
+    var ctor = function (domPlaceHolder) {
         game = this;
         var self = this; // prevents overlaping this-context
 
         var midY = Config.grid.height/2;
-// private var
+// private              var privateVariable
         var config = new Config();
         var view = new View();
-        var keyBinder = new KeyBinder();
+        var keyContext = new KeyContext();
         var fighter = new Fighter(new Vector2D(1, midY),new Vector2D(1,0));
         BattleArena.addGameObject(fighter);
+
+        var delay = 20;
         var shouldInterupt = false;
 
 // public instance only
 
-        self.gameLoop = function (timeStamp) {
+//      Game
+        self.start = function () {
+            // document.addEventListener("keypress",game.keybinder.OnKeyPress);
+            //document.addEventListener("keyup",game.keybinder.OnKeyUp);
+            $("body").keydown(this.getKeyContext().OnKeyPress);
+            $("body").keyup(this.getKeyContext().OnKeyUp);
+
+            shouldInterupt = false;
+            gameLoop();
+            view.startRender();
+        };
+        self.pause = function () {
+            $("body").unbind("keydown",this.getKeyContext().OnKeyPress);
+            $("body").unbind("keyup",this.getKeyContext().OnKeyUp);
+
+            shouldInterupt = true;
+            view.stopRender();
+        };
+        self.restart = function () {
+
+        };
+        var gameLoop = function (timeStamp) {
             self.moveGameObjects();
-            if(self.getKeyBinder().actionsTriggered[Config.shoot] == true){
+            if(self.getKeyContext().actionsTriggered[Config.shoot] == true){
                 self.getFighter().shoots();
             }
 
             if(self.shouldInterupt()){
                 return;
             }
-            window.setTimeout(function () { self.gameLoop(); },Config.delay);
+            window.setTimeout(function () { gameLoop(); },delay);
             //window.requestAnimationFrame(function(){ self.gameLoop(); });
         };
 
@@ -38,20 +61,20 @@ var BattleArena = (function () {
             for(var i = 0;i < gameObjects.length;i++){
                 var gameObject = gameObjects[i];
                 if (GameObject.Type.Fighter == gameObject.getType()) {
-                    if (self.getKeyBinder().actionsTriggered[Config.moveLeft[0]] == true
-                        || self.getKeyBinder().actionsTriggered[Config.moveLeft[1]] == true) {
+                    if (self.getKeyContext().actionsTriggered[Config.moveLeft[0]] == true
+                        || self.getKeyContext().actionsTriggered[Config.moveLeft[1]] == true) {
                         gameObject.move(new Vector2D(-1, 0));
                     }
-                    if (self.getKeyBinder().actionsTriggered[Config.moveTop[0]] == true
-                        || self.getKeyBinder().actionsTriggered[Config.moveTop[1]] == true) {
+                    if (self.getKeyContext().actionsTriggered[Config.moveTop[0]] == true
+                        || self.getKeyContext().actionsTriggered[Config.moveTop[1]] == true) {
                         gameObject.move(new Vector2D(0, -1));
                     }
-                    if (self.getKeyBinder().actionsTriggered[Config.moveRight[0]] == true
-                        || self.getKeyBinder().actionsTriggered[Config.moveRight[1]] == true) {
+                    if (self.getKeyContext().actionsTriggered[Config.moveRight[0]] == true
+                        || self.getKeyContext().actionsTriggered[Config.moveRight[1]] == true) {
                         gameObject.move(new Vector2D(1, 0));
                     }
-                    if (self.getKeyBinder().actionsTriggered[Config.moveBottom[0]] == true
-                        || self.getKeyBinder().actionsTriggered[Config.moveBottom[1]] == true) {
+                    if (self.getKeyContext().actionsTriggered[Config.moveBottom[0]] == true
+                        || self.getKeyContext().actionsTriggered[Config.moveBottom[1]] == true) {
                         gameObject.move(new Vector2D(0, 1));
                     }
                 } else if (GameObject.Type.Projectile == gameObject.getType()) {
@@ -62,16 +85,15 @@ var BattleArena = (function () {
             }
         };
 
-
+        (function init() {
+            view.loadDOM(domPlaceHolder);
+        })();
 // Getters & Setters
         self.getConfig = function(){ return config; };
         self.getView = function(){ return view; };
-        self.getKeyBinder = function(){ return keyBinder; };
+        self.getKeyContext = function(){ return keyContext; };
         self.getFighter = function(){ return fighter; };
-
         self.shouldInterupt = function(){ return shouldInterupt; };
-        self.setShouldInterupt = function (value) { shouldInterupt = value; };
-
     };
 
 // public static
@@ -99,24 +121,6 @@ var BattleArena = (function () {
 
 // public shared
     ctor.prototype = {
-        start : function (placeholder) {
-            this.getView().loadDOM(placeholder);
-
-            // document.addEventListener("keypress",game.keybinder.OnKeyPress);
-            //document.addEventListener("keyup",game.keybinder.OnKeyUp);
-            $("body").keydown(this.getKeyBinder().OnKeyPress);
-            $("body").keyup(this.getKeyBinder().OnKeyUp);
-
-            this.gameLoop();
-            this.getView().startRender();
-        },
-        pause : function () {
-            this.setShouldInterupt(true);
-            this.getView().stopRender();
-        },
-        restart : function () {
-
-        }
     };
 
 //  Inheritance

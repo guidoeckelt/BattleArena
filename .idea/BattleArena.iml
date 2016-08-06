@@ -9,5 +9,6 @@
     <orderEntry type="sourceFolder" forTests="false" />
     <orderEntry type="library" name="jquery" level="application" />
     <orderEntry type="library" name="qunit-2.0.1" level="application" />
+    <orderEntry type="library" name="three" level="application" />
   </component>
 </module>

@@ -7,7 +7,8 @@
     <link href="Style/design.css" rel="stylesheet"/>
 
     <!-- Externals Scripts-->
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.1.0/jquery.min.js"></script>
+    <script src="Externals/3.1.0-jquery-min.js"></script>
+    <script src="Externals/r79-three-min.js"></script>
     <!-- Game Scripts-->
     <script src="ExceptionContext/ExceptionContext.js"></script>
     <script src="Util/Oop.js"></script>
@@ -15,7 +16,7 @@
     <script src="KeyContext/SpecialKey.js"></script>
     <script src="KeyContext/KeyCombination.js"></script>
     <script src="KeyContext/KeyBinding.js"></script>
-    <script src="KeyContext/KeyBinder.js"></script>
+    <script src="KeyContext/KeyContext.js"></script>
     <script src="Model/GameObject/Vector2D.js"></script>
     <script src="Model/GameObject/GameObject.js"></script>
 	<script src="Model/GameObject/Projectile.js"></script>
@@ -28,12 +29,19 @@
         $(function(){
 
             //============INIT============
-            var endlessSpaceGame = new BattleArena();
-            endlessSpaceGame.start("scenePlaceholder");
+            var endlessSpaceGame = new BattleArena("domPlaceholder");
+//            endlessSpaceGame.start();
 
                 //========Interaction=====
             $("#btn-pause").click(function (event) {
                 endlessSpaceGame.pause();
+                $("#check-pause").attr("disabled","disabled");
+                $("#check-start").removeAttr("disabled");
+            });
+            $("#btn-start").click(function (event) {
+                endlessSpaceGame.start();
+                $("#check-start").attr("disabled","disabled");
+                $("#check-pause").removeAttr("disabled");
             });
                 //========================
             //============================
@@ -43,9 +51,20 @@
 <body>
 	<div id="root">
         <div class="container">
-            <div id="scenePlaceholder"></div>
+            <div id="domPlaceholder"></div>
         </div>
-        <div id="btn-pause" class="pause">Pause</div>
+        <div class="dashboard">
+            <div class="btn-list">
+                <div class="btn-container">
+                    <input class="btn-check" id="check-start" type="checkbox"/>
+                    <label id="btn-start" class="btn-text start" for="check-start">Start</label>
+                </div>
+                <div class="btn-container">
+                    <input class="btn-check" id="check-pause" type="checkbox" disabled/>
+                    <label id="btn-pause" class="btn-text pause" for="check-pause">Pause</label>
+                </div>
+            </div>
+        </div>
 	</div>
 </body>
 </html>
