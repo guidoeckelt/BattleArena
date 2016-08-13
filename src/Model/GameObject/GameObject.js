@@ -13,9 +13,9 @@ var GameObject = (function(){
         var width = widthValue;
         var height = heightValue;
 
-        var alignment;
-        var movingDirection;
-        var movingSpeed;
+        var alignment = new Vector2D(0,0);
+        var movingDirection = new Vector2D(0,0);
+        var movingSpeed = 0;
 
 // public instance only
 
@@ -36,8 +36,8 @@ var GameObject = (function(){
         self.getAlignment = function(){ return alignment; };
         self.setAlignment = function (value) { alignment = value; };
 
-        self.getMovingDirection = function(){ return movingDirection.normalize(); };
-        self.setMovingDirection = function (value)  { movingDirection = value; };
+        self.getMovingDirection = function(){ return movingDirection; };
+        self.setMovingDirection = function (value)  { movingDirection = value.normalize(); };
 
         self.getMovingSpeed = function(){ return movingSpeed; };
         self.setMovingSpeed = function (value)  { movingSpeed = value; };
@@ -45,13 +45,24 @@ var GameObject = (function(){
     };
 
 // public static
-    ctor.Type = { Fighter : "Fighter",Projectile:"Projectile"};
-    ctor.State = { INVISION : "InVision" , OUTOFVISION : "OutOfVision"};
+    ctor.Type = { FIGHTER : "FIGHTER",Projectile:"Projectile"};
+    ctor.State = { INBOUNDS : "InBounds" , OUTOFBOUNDS : "OutOfBounds"};
 
 // public shared
     ctor.prototype = {
+        fall : function () {
+            var oldDir = this.getMovingDirection();
+            var fallDir = new Vector2D(0,2.5);
+            var newDir;
+            if(oldDir.getX() != 0){
+                newDir = oldDir.add(fallDir);
+            }else{
+                newDir = fallDir;
+            }
+            this.move(newDir);
+        },
         move : function(movingDirection){
-            if(null==movingDirection){//&&null!=this.getMovingDirection()){
+            if(null==movingDirection){
                 if(null!=this.getMovingDirection()){
                     movingDirection = this.getMovingDirection();
                 }else{
@@ -64,14 +75,16 @@ var GameObject = (function(){
             }
             var moveOffset = movingDirection.multipleByScalar(this.getMovingSpeed());
             var dummyGameObject = this.clone(moveOffset);
-            if(dummyGameObject.getPosition().getX() < 1||dummyGameObject.getPosition().getX()+dummyGameObject.getWidth() > Config.grid.width){
-                return GameObject.State.OUTOFVISION;
+            if(dummyGameObject.getPosition().getX() < 1|| dummyGameObject.getPosition().getX()
+                +dummyGameObject.getWidth() > BattleArena.getCurrentMap().getSize().getWidth()){
+                return GameObject.State.OUTOFBOUNDS;
             }
-            if(dummyGameObject.getPosition().getY() < 1||dummyGameObject.getPosition().getY()+dummyGameObject.getHeight()-1 > Config.grid.height){
-                return GameObject.State.OUTOFVISION;
+            if(dummyGameObject.getPosition().getY() < 1||dummyGameObject.getPosition().getY()
+                +dummyGameObject.getHeight() > BattleArena.getCurrentMap().getSize().getHeight()){
+                return GameObject.State.OUTOFBOUNDS;
             }
             this.setPosition(this.getPosition().add(moveOffset));
-            return GameObject.State.INVISION;
+            return GameObject.State.INBOUNDS;
         },
         clone : function(movingDirection){
             var newGameObject = new GameObject(this.getType(), this.getPosition()

@@ -20,18 +20,18 @@ body{
     --base-click-background-text:   #0ab30e;
     --base-click-blink:             rgba(255, 229, 8, 0.8);
 
-    --depth-5:                      0px  5px 15px  7px rgba(0, 0, 0, 0.6);
-    --depth-7:                      0px  7px 15px  7px rgba(0, 0, 0, 0.6);
-    --depth-9:                      0px  9px 15px  7px rgba(0, 0, 0, 0.6);
-    --depth-11:                     0px 11px 15px  7px rgba(0, 0, 0, 0.6);
+    --shadow-1:                     0px  5px 10px  3px rgba(0, 0, 0, 0.6);
+    --shadow-2:                     0px  7px 15px  7px rgba(0, 0, 0, 0.6);
+    --shadow-3:                     0px  9px 15px  7px rgba(0, 0, 0, 0.6);
+    --shadow-4:                     0px 11px 15px  7px rgba(0, 0, 0, 0.6);
 }
 .scene{
 	background:			            #C4C4C4;
-    box-shadow:                     var(--depth-11);
+    box-shadow:                     var(--shadow-3);
 }
 .dashboard{
     background-color:               var(--dashboard-color);
-    box-shadow:                     var(--depth-7);
+    box-shadow:                     var(--shadow-2);
 
 	display:			            flex;
 	flex-flow:			            column nowrap;
@@ -73,6 +73,7 @@ body{
 
     cursor:                         pointer;
     background-color:               var(--base-background-text);
+    box-shadow:                     var(--shadow-1);
     transition:                     background-color 0.5s linear;
 
     text-align:                     center;
@@ -93,7 +94,7 @@ body{
     animation:                      clicked 1s linear;
 }
 .btn-check:disabled + .btn-text{
-    cursor:                         not-allowed;
+    cursor:                         default;
     background-color:               var(--base-disabled-background-text);
 }
 

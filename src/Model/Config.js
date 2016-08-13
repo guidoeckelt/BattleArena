@@ -15,7 +15,8 @@ var Config = (function () {
     };
 
 // public static
-    ctor.grid = { width: 1000,  height: 600};
+    ctor.Fighters = { FIGHTER : "FIGHTER" };
+    ctor.Maps = { THESHOWDOWN : "THESHOWDOWN"};
 
     ctor.moveLeft 	= [37,  97];
     ctor.moveRight 	= [39, 100];

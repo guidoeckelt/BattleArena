@@ -28,7 +28,7 @@ function View(){
 
 	self.render = function () {
 		self.context.clearRect(0,0,self.canvas.width, self.canvas.height);
-		self.drawBackground();
+		BattleArena.getCurrentMap().draw(self.context);
 		self.drawObjects(BattleArena.getGameObjects());
 
 		if(self.shouldInterupt){
@@ -36,18 +36,9 @@ function View(){
 		}
 		window.setTimeout(function () { self.render(); },self.delay);
 	};
-	self.drawBackground = function () {
-		self.context.fillStyle = "#000000";
-		var blockSize = 2;
-		for(var y = 5;y < self.size.height;y+=10){
-			for(var x = 5;x < self.size.width;x+=10){
-				self.context.fillRect(x, y, blockSize, blockSize);
-			}
-		}
-	};
 	self.drawObjects = function(gameObjects){
 		for(var gameObject of gameObjects){
-			if (GameObject.Type.Fighter == gameObject.getType()) {
+			if (GameObject.Type.FIGHTER == gameObject.getType()) {
 				self.drawFighter(gameObject);
 			} else if (GameObject.Type.Projectile == gameObject.getType()) {
 				self.drawProjectile(gameObject);
